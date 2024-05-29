@@ -19,25 +19,28 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _quantityController = TextEditingController();
   File? _image;
 
-  Future<void> _pickImage() async {
-    // İzinleri kontrol edin ve isteyin
-    var status = await Permission.storage.status;
-    if (status.isDenied || status.isRestricted || status.isPermanentlyDenied) {
-      status = await Permission.storage.request();
-    }
+  Future<void> _requestPermissions() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+      Permission.camera,
+    ].request();
 
-    if (status.isGranted) {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-      setState(() {
-        if (pickedFile != null) {
-          _image = File(pickedFile.path);
-        }
-      });
-    } else {
+    if (statuses[Permission.storage] != PermissionStatus.granted || statuses[Permission.camera] != PermissionStatus.granted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Photo permission is needed to select images.'),
+        content: Text('Storage and Camera permissions are required to pick an image. Please grant the permissions in settings.'),
       ));
     }
+  }
+
+  Future<void> _pickImage() async {
+    await _requestPermissions();
+
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
   }
 
   Future<void> _addProduct() async {
@@ -77,7 +80,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference storageReference = FirebaseStorage.instance.ref().child('products/$fileName');
     UploadTask uploadTask = storageReference.putFile(image);
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    TaskSnapshot taskSnapshot = await uploadTask;
     return await taskSnapshot.ref.getDownloadURL();
   }
 

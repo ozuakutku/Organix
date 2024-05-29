@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'register_screen.dart';
 import 'forgot_password_screen.dart';
-import 'home_screen.dart'; // HomeScreen import edildi
+import 'home_screen.dart';
 import '../widgets/custom_text_field.dart';
-import '../widgets/primary_button.dart';
+import '../widgets/primary_button.dart';  // Güncellenmiş isim
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -55,46 +55,52 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-        backgroundColor: Colors.green,
-      ),
+      backgroundColor: Colors.lightGreen[50],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              CustomTextField(
-                label: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                onSaved: (value) => _email = value,
-                validator: (value) => value!.isEmpty || !value.contains('@')
-                    ? 'Please enter a valid email address'
-                    : null,
-              ),
-              CustomTextField(
-                label: 'Password',
-                obscureText: true,
-                onSaved: (value) => _password = value,
-                validator: (value) => value!.isEmpty
-                    ? 'Please enter your password'
-                    : null,
-              ),
-              SizedBox(height: 20),
-              PrimaryButton(
-                text: 'Login',
-                onPressed: _login,
-              ),
-              TextButton(
-                onPressed: _navigateToForgotPassword,
-                child: Text('Forgot Password?'),
-              ),
-              TextButton(
-                onPressed: _navigateToRegister,
-                child: Text('Don\'t have an account? Register'),
-              ),
-            ],
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                SizedBox(height: 50),
+                Image.asset(
+                  'assets/images/organix_logo.png',
+                  height: 300,
+                ),
+                CustomTextField(
+                  label: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                  onSaved: (value) => _email = value,
+                  validator: (value) => value!.isEmpty || !value.contains('@')
+                      ? 'Please enter a valid email address'
+                      : null,
+                ),
+                CustomTextField(
+                  label: 'Password',
+                  obscureText: true,
+                  onSaved: (value) => _password = value,
+                  validator: (value) => value!.isEmpty
+                      ? 'Please enter your password'
+                      : null,
+                ),
+                SizedBox(height: 20),
+                PrimaryButton(
+                  text: 'Login',
+                  onPressed: _login,
+                  backgroundColor: Colors.lightGreen,
+                ),
+                TextButton(
+                  onPressed: _navigateToForgotPassword,
+                  child: Text('Forgot Password?'),
+                ),
+                TextButton(
+                  onPressed: _navigateToRegister,
+                  child: Text('Don\'t have an account? Register'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

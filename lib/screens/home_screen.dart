@@ -14,8 +14,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
-        backgroundColor: Colors.green,
+        title: Text('Ana Sayfa'),
+        backgroundColor: Colors.lightGreen,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout),
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        'My Fields',
+                        'Tarlalarım',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -65,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                               var field = fields[index];
                               return ListTile(
                                 title: Text(field['name']),
-                                subtitle: Text('Size: ${field['size']} hectares'),
+                                subtitle: Text('Boyut: ${field['size']} hektar'),
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -92,9 +92,11 @@ class HomeScreen extends StatelessWidget {
                               MaterialPageRoute(builder: (context) => AddFieldScreen()),
                             );
                           },
-                          child: Text('Add Field'),
+                          child: Text('Tarla Ekle'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
+                            backgroundColor: Colors.lightGreen,
+                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            textStyle: TextStyle(fontSize: 16),
                           ),
                         ),
                       ),
@@ -106,10 +108,13 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/market');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MarketScreen()), // MarketScreen'e yönlendir
+                );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
+                backgroundColor: Colors.lightGreen,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 textStyle: TextStyle(fontSize: 18),
               ),

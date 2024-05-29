@@ -7,41 +7,50 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+      backgroundColor: Colors.lightGreen[50], // Aynı arka plan rengi
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset('assets/logo.png'), // Logonuzu 'assets' klasörüne koyun
+              SizedBox(height: 50), // Boşluk ekleyerek daha iyi yerleşim
+              Image.asset(
+                'assets/images/organix_logo.png',
+                height: 300, // Logonun boyutunu artırdık
+                width: 300,  // Logonun genişliğini belirledik
+                fit: BoxFit.contain, // Görüntünün nasıl yerleşeceğini belirledik
+              ),
               SizedBox(height: 20),
               Text(
-                'Welcome to Organix',
+                'Organix\'e Hoşgeldiniz',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.green,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 50),
               PrimaryButton(
-                text: 'Login',
+                text: 'Giriş Yap',
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
+                backgroundColor: Colors.lightGreen, // Aynı buton rengi
               ),
+              SizedBox(height: 20), // Butonlar arasında boşluk
               PrimaryButton(
-                text: 'Register',
+                text: 'Kayıt Ol',
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
                   );
                 },
+                backgroundColor: Colors.lightGreen, // Aynı buton rengi
               ),
             ],
           ),

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
 
+
 class ForgotPasswordScreen extends StatefulWidget {
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
@@ -34,30 +35,41 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Forgot Password'),
-        backgroundColor: Colors.green,
-      ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              CustomTextField(
-                label: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                onSaved: (value) => _email = value,
-                validator: (value) => value!.isEmpty || !value.contains('@')
-                    ? 'Please enter a valid email address'
-                    : null,
-              ),
-              SizedBox(height: 20),
-              PrimaryButton(
-                text: 'Reset Password',
-                onPressed: _resetPassword,
-              ),
-            ],
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                SizedBox(height: 50),
+                Text(
+                  'App Logo',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 50),
+                CustomTextField(
+                  label: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                  onSaved: (value) => _email = value,
+                  validator: (value) => value!.isEmpty || !value.contains('@')
+                      ? 'Please enter a valid email address'
+                      : null,
+                ),
+                SizedBox(height: 20),
+                PrimaryButton(
+                  text: 'Reset Password',
+                  onPressed: _resetPassword,
+                ),
+              ],
+            ),
           ),
         ),
       ),

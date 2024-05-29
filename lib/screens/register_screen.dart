@@ -34,7 +34,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _requestPermissions() async {
-    // İzinleri istemek için fonksiyon
     if (await Permission.location.isDenied) {
       await Permission.location.request();
     }
@@ -44,7 +43,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _register() async {
-    // İzinlerin durumunu kontrol et ve izin isteme diyaloglarını göster
     await _requestPermissions();
 
     if (_formKey.currentState!.validate()) {
@@ -83,90 +81,100 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-        backgroundColor: Colors.green,
-      ),
+      backgroundColor: Colors.lightGreen[50],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              CustomTextField(
-                label: 'First Name',
-                onSaved: (value) => _firstName = value,
-                validator: (value) => value!.isEmpty ? 'Please enter your first name' : null,
-              ),
-              CustomTextField(
-                label: 'Last Name',
-                onSaved: (value) => _lastName = value,
-                validator: (value) => value!.isEmpty ? 'Please enter your last name' : null,
-              ),
-              CustomTextField(
-                label: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                onSaved: (value) => _email = value,
-                validator: (value) => value!.isEmpty || !value.contains('@') ? 'Please enter a valid email address' : null,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Birth Date (YYYY-MM-DD)'),
-                readOnly: true,
-                controller: _dateController,
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now(),
-                  );
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                SizedBox(height: 50),
+                /*Image.asset(
+                  'assets/images/organix_logo.png',
+                  height: 300, // Logonun yüksekliğini artırdık
+                  width: 300,  // Logonun genişliğini belirledik
+                  fit: BoxFit.contain, // Görüntünün nasıl yerleşeceğini belirledik
+                ),*/
 
-                  if (pickedDate != null) {
-                    setState(() {
-                      _birthDate = pickedDate;
-                      _dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                    });
-                  }
-                },
-                validator: (value) {
-                  if (_birthDate == null) {
-                    return 'Please enter your birth date';
-                  }
-                  return null;
-                },
-              ),
-              CustomTextField(
-                label: 'Occupation',
-                onSaved: (value) => _occupation = value,
-                validator: (value) => value!.isEmpty ? 'Please enter your occupation' : null,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                controller: _passwordController,
-                onSaved: (value) => _password = value,
-                validator: (value) => value!.isEmpty ? 'Please enter your password' : null,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Confirm Password'),
-                obscureText: true,
-                controller: _confirmPasswordController,
-                validator: (value) {
-                  if (value != _passwordController.text) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              PrimaryButton(
-                text: 'Register',
-                onPressed: _register,
-              ),
-            ],
+                CustomTextField(
+                  label: 'First Name',
+                  onSaved: (value) => _firstName = value,
+                  validator: (value) => value!.isEmpty ? 'Please enter your first name' : null,
+                ),
+                CustomTextField(
+                  label: 'Last Name',
+                  onSaved: (value) => _lastName = value,
+                  validator: (value) => value!.isEmpty ? 'Please enter your last name' : null,
+                ),
+                CustomTextField(
+                  label: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                  onSaved: (value) => _email = value,
+                  validator: (value) => value!.isEmpty || !value.contains('@') ? 'Please enter a valid email address' : null,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Birth Date (YYYY-MM-DD)'),
+                  readOnly: true,
+                  controller: _dateController,
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+
+                    if (pickedDate != null) {
+                      setState(() {
+                        _birthDate = pickedDate;
+                        _dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      });
+                    }
+                  },
+                  validator: (value) {
+                    if (_birthDate == null) {
+                      return 'Please enter your birth date';
+                    }
+                    return null;
+                  },
+                ),
+                CustomTextField(
+                  label: 'Occupation',
+                  onSaved: (value) => _occupation = value,
+                  validator: (value) => value!.isEmpty ? 'Please enter your occupation' : null,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  controller: _passwordController,
+                  onSaved: (value) => _password = value,
+                  validator: (value) => value!.isEmpty ? 'Please enter your password' : null,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Confirm Password'),
+                  obscureText: true,
+                  controller: _confirmPasswordController,
+                  validator: (value) {
+                    if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryButton(
+                  text: 'Register',
+                  onPressed: _register,
+                  backgroundColor: Colors.lightGreen,
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
 }
