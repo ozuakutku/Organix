@@ -6,6 +6,8 @@ import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/market_screen/market_screen.dart'; // MarketScreen'i ekleyin
+import 'screens/pdf_viewer_screen.dart'; // PdfViewerScreen'i ekleyin
+import 'screens/chatbot_screen.dart'; // ChatbotScreen'i ekleyin
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
         hintColor: Colors.orangeAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
         '/': (context) => AuthCheck(),
@@ -30,6 +33,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/market': (context) => MarketScreen(), // MarketScreen rotasını ekleyin
+        '/pdf_viewer': (context) => PdfViewerScreen(), // PdfViewerScreen rotasını ekleyin
+        '/chatbot': (context) => ChatbotScreen(user: FirebaseAuth.instance.currentUser!), // ChatbotScreen rotasını ekleyin
       },
     );
   }

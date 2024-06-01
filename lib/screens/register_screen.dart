@@ -21,6 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? _email;
   DateTime? _birthDate;
   String? _occupation;
+  String? _phoneNumber;
   String? _password;
 
   final TextEditingController _passwordController = TextEditingController();
@@ -59,6 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'email': _email,
           'birthDate': _birthDate != null ? Timestamp.fromDate(_birthDate!) : null,
           'occupation': _occupation,
+          'phone': _phoneNumber,
         });
 
         Navigator.pop(context);
@@ -91,13 +93,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               shrinkWrap: true,
               children: <Widget>[
                 SizedBox(height: 50),
-                /*Image.asset(
-                  'assets/images/organix_logo.png',
-                  height: 300, // Logonun yüksekliğini artırdık
-                  width: 300,  // Logonun genişliğini belirledik
-                  fit: BoxFit.contain, // Görüntünün nasıl yerleşeceğini belirledik
-                ),*/
-
                 CustomTextField(
                   label: 'First Name',
                   onSaved: (value) => _firstName = value,
@@ -145,6 +140,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onSaved: (value) => _occupation = value,
                   validator: (value) => value!.isEmpty ? 'Please enter your occupation' : null,
                 ),
+                CustomTextField(
+                  label: 'Phone Number',
+                  keyboardType: TextInputType.phone,
+                  onSaved: (value) => _phoneNumber = value,
+                  validator: (value) => value!.isEmpty ? 'Please enter your phone number' : null,
+                ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
@@ -176,5 +177,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-
 }

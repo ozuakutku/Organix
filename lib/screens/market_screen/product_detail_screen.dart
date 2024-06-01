@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -7,8 +8,40 @@ class ProductDetailScreen extends StatelessWidget {
 
   ProductDetailScreen({required this.product});
 
+  Future<void> _removeProduct(BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance.collection('products').doc(product.id).delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Product removed successfully')),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
+
+  void _sendMessage(BuildContext context, String ownerId) async {
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(ownerId).get();
+    String phoneNumber = userDoc['phone'];
+
+    String message = 'I am interested in your product: ${product['name']}';
+
+    String url = 'sms:$phoneNumber?body=$message';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Could not launch SMS'),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(product['name']),
@@ -46,6 +79,15 @@ class ProductDetailScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             ),
             Spacer(),
+            if (product['ownerId'] == user!.uid) ...[
+              ElevatedButton(
+                onPressed: () {
+                  _removeProduct(context);
+                },
+                child: Text('Remove Product'),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              ),
+            ],
             ElevatedButton(
               onPressed: () {
                 _sendMessage(context, product['ownerId']);
@@ -57,21 +99,5 @@ class ProductDetailScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _sendMessage(BuildContext context, String ownerId) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(ownerId).get();
-    String phoneNumber = userDoc['phone'];
-
-    String message = 'I am interested in your product: ${product['name']}';
-
-    String url = 'sms:$phoneNumber?body=$message';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Could not launch SMS'),
-      ));
-    }
   }
 }

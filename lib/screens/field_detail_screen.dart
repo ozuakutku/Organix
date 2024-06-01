@@ -33,10 +33,42 @@ class FieldDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Temperature: ${weather['temp']}°C', style: TextStyle(fontSize: 18)),
-                  Text('Weather: ${weather['weather']['description']}', style: TextStyle(fontSize: 18)),
-                  Text('Humidity: ${weather['rh']}%', style: TextStyle(fontSize: 18)),
-                  // Daha fazla veri gösterilebilir
+                  // Hava durumu bilgileri
+                  Card(
+                    elevation: 4.0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Hava Durumu', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 10),
+                          Text('Sıcaklık: ${weather['temp']}°C', style: TextStyle(fontSize: 18)),
+                          Text('Hava: ${weather['weather']['description']}', style: TextStyle(fontSize: 18)),
+                          Text('Nem: ${weather['rh']}%', style: TextStyle(fontSize: 18)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  // Tarla detayları
+                  Card(
+                    elevation: 4.0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Tarla Detayları', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 10),
+                          Text('Ad: ${field['name']}', style: TextStyle(fontSize: 18)),
+                          Text('Boyut: ${field['size']}', style: TextStyle(fontSize: 18)),
+                          Text('Konum: (${geoPoint.latitude}, ${geoPoint.longitude})', style: TextStyle(fontSize: 18)),
+                          // Daha fazla tarla detayı eklenebilir
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );

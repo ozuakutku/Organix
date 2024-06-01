@@ -1,14 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../services/weather_service.dart';
 import 'add_field_screen.dart';
-import 'field_detail_screen.dart';
 import 'market_screen/market_screen.dart'; // MarketScreen'i import edin
+import 'profile_screen.dart'; // ProfileScreen'i import edin
+import 'chatbot_screen.dart'; // ChatbotScreen'i import edin
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final User user;
 
   HomeScreen({required this.user});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  final List<Widget> _screens = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _screens.addAll([
+      HomeContent(user: widget.user),
+      MarketScreen(),
+      ProfileScreen(user: widget.user),
+      ChatbotScreen(user: widget.user), // ChatbotScreen'i listeye ekleyin
+    ]);
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  BottomNavigationBarItem _buildBottomNavigationBarItem(IconData icon, String label, int index) {
+    bool isSelected = _selectedIndex == index;
+    return BottomNavigationBarItem(
+      icon: Container(
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.white : Colors.lightGreen,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          icon,
+          color: isSelected ? Colors.lightGreen : Colors.white,
+        ),
+        padding: EdgeInsets.all(8),
+      ),
+      label: label,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          _buildBottomNavigationBarItem(Icons.home, 'Home', 0),
+          _buildBottomNavigationBarItem(Icons.shopping_cart, 'Market', 1),
+          _buildBottomNavigationBarItem(Icons.person, 'Profile', 2),
+          _buildBottomNavigationBarItem(Icons.smart_toy, 'AI', 3),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class HomeContent extends StatelessWidget {
+  final User user;
+
+  HomeContent({required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -63,16 +131,70 @@ class HomeScreen extends StatelessWidget {
                             itemCount: fields.length,
                             itemBuilder: (context, index) {
                               var field = fields[index];
-                              return ListTile(
-                                title: Text(field['name']),
-                                subtitle: Text('Boyut: ${field['size']} hektar'),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FieldDetailScreen(field: field),
-                                    ),
-                                  );
+                              return FutureBuilder<Map<String, dynamic>>(
+                                future: WeatherService().getCurrentWeather(
+                                  field['location'].latitude,
+                                  field['location'].longitude,
+                                ),
+                                builder: (context, weatherSnapshot) {
+                                  if (weatherSnapshot.connectionState == ConnectionState.waiting) {
+                                    return Center(child: CircularProgressIndicator());
+                                  } else if (weatherSnapshot.hasError) {
+                                    return Center(child: Text('Error: ${weatherSnapshot.error}'));
+                                  } else if (!weatherSnapshot.hasData) {
+                                    return Center(child: Text('No data'));
+                                  } else {
+                                    final weather = weatherSnapshot.data!;
+                                    final weatherIconUrl = WeatherService().getWeatherIconUrl(weather['weather']['icon']);
+                                    return Card(
+                                      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Image.network(
+                                                  weatherIconUrl,
+                                                  width: 50,
+                                                  height: 50,
+                                                ),
+                                                SizedBox(width: 10),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      field['name'],
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Sıcaklık: ${weather['temp']}°C',
+                                                      style: TextStyle(fontSize: 16),
+                                                    ),
+                                                    Text(
+                                                      'Hava: ${weather['weather']['description']}',
+                                                      style: TextStyle(fontSize: 16),
+                                                    ),
+                                                    Text(
+                                                      'Nem: ${weather['rh']}%',
+                                                      style: TextStyle(fontSize: 16),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 10),
+                                            Text('Boyut: ${field['size']} hektar', style: TextStyle(fontSize: 16)),
+                                            // Daha fazla veri gösterilebilir
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 },
                               );
                             },
@@ -104,21 +226,6 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MarketScreen()), // MarketScreen'e yönlendir
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightGreen,
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                textStyle: TextStyle(fontSize: 18),
-              ),
-              child: Text('Market'),
             ),
           ],
         ),
