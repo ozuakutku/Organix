@@ -8,6 +8,7 @@ import 'screens/register_screen.dart';
 import 'screens/market_screen/market_screen.dart'; // MarketScreen'i ekleyin
 import 'screens/pdf_viewer_screen.dart'; // PdfViewerScreen'i ekleyin
 import 'screens/chatbot_screen.dart'; // ChatbotScreen'i ekleyin
+import 'screens/library_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterScreen(),
         '/market': (context) => MarketScreen(), // MarketScreen rotasını ekleyin
         '/pdf_viewer': (context) => PdfViewerScreen(), // PdfViewerScreen rotasını ekleyin
-        '/chatbot': (context) => ChatbotScreen(user: FirebaseAuth.instance.currentUser!), // ChatbotScreen rotasını ekleyin
+        '/chatbot': (context) => ChatbotScreen(user: FirebaseAuth.instance.currentUser!),
+        '/library': (context) => LibraryScreen(),
       },
     );
   }

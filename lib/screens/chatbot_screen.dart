@@ -42,7 +42,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                   return CircularProgressIndicator();
                 }
                 var fields = snapshot.data!.docs;
-                return DropdownButton<String>(
+                return DropdownButtonFormField<String>(
                   value: _selectedFieldId,
                   hint: Text('Tarla Seçin'),
                   items: fields.map((field) {
@@ -56,19 +56,60 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                       _selectedFieldId = value;
                     });
                   },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(color: Colors.green, width: 2.0),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+                  ),
                 );
               },
             ),
+            SizedBox(height: 10),
             TextField(
               controller: _controller,
               decoration: InputDecoration(
                 labelText: 'Sorunuzu yazın',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: Colors.green, width: 2.0),
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
               ),
             ),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: _pickPdf,
               child: Text('Toprak Analizi Raporu Ekle'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
             ),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
                 if (_selectedFieldId != null && _controller.text.isNotEmpty) {
@@ -94,6 +135,12 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 }
               },
               child: Text('Gönder'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
             ),
             SizedBox(height: 20),
             Expanded(
@@ -101,9 +148,15 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 child: Card(
                   color: Colors.grey[200],
                   margin: EdgeInsets.all(8.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text(_response),
+                    child: Text(
+                      _response,
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
                 ),
               ),

@@ -42,6 +42,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Widget _buildProfileCard(String title, String? value) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: ListTile(
+        title: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.lightGreen),
+        ),
+        subtitle: Text(value ?? ''),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,30 +71,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ? Center(child: CircularProgressIndicator())
             : ListView(
           children: <Widget>[
-            ListTile(
-              title: Text('First Name', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text(_firstName ?? ''),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Last Name', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text(_lastName ?? ''),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text(_email ?? ''),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Birth Date', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text(_birthDate != null ? DateFormat('yyyy-MM-dd').format(_birthDate!) : ''),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Occupation', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text(_occupation ?? ''),
-            ),
+            _buildProfileCard('Ad', _firstName),
+            _buildProfileCard('Soyad', _lastName),
+            _buildProfileCard('E-posta', _email),
+            _buildProfileCard('Doğum Tarihi', _birthDate != null ? DateFormat('yyyy-MM-dd').format(_birthDate!) : ''),
+            _buildProfileCard('Meslek', _occupation),
           ],
         ),
       ),

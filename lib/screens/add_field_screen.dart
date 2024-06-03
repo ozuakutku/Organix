@@ -48,7 +48,7 @@ class _AddFieldScreenState extends State<AddFieldScreen> {
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: ${e.toString()}'),
+          content: Text('Hata: ${e.toString()}'),
         ));
       }
     }
@@ -58,8 +58,8 @@ class _AddFieldScreenState extends State<AddFieldScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Field'),
-        backgroundColor: Colors.green,
+        title: Text('Tarla Ekle'),
+        backgroundColor: Colors.lightGreen,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -68,10 +68,10 @@ class _AddFieldScreenState extends State<AddFieldScreen> {
           child: ListView(
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Field Name'),
+                decoration: InputDecoration(labelText: 'Tarla Adı'),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter the field name';
+                    return 'Lütfen tarla adını girin';
                   }
                   return null;
                 },
@@ -80,11 +80,11 @@ class _AddFieldScreenState extends State<AddFieldScreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Size (hectares)'),
+                decoration: InputDecoration(labelText: 'Boyut (hektar)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter the field size';
+                    return 'Lütfen tarla boyutunu girin';
                   }
                   return null;
                 },
@@ -93,10 +93,10 @@ class _AddFieldScreenState extends State<AddFieldScreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: 'Açıklama'),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter a description';
+                    return 'Lütfen bir açıklama girin';
                   }
                   return null;
                 },
@@ -107,17 +107,17 @@ class _AddFieldScreenState extends State<AddFieldScreen> {
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _selectLocation,
-                child: Text(_latitude == null ? 'Select Location on Map' : 'Location: $_latitude, $_longitude'),
+                child: Text(_latitude == null ? 'Haritada Konum Seç' : 'Konum: $_latitude, $_longitude'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _addField,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: Colors.lightGreen,
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                   textStyle: TextStyle(fontSize: 18),
                 ),
-                child: Text('Add Field'),
+                child: Text('Tarla Ekle'),
               ),
             ],
           ),

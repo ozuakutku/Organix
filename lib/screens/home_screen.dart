@@ -6,6 +6,7 @@ import 'add_field_screen.dart';
 import 'market_screen/market_screen.dart'; // MarketScreen'i import edin
 import 'profile_screen.dart'; // ProfileScreen'i import edin
 import 'chatbot_screen.dart'; // ChatbotScreen'i import edin
+import 'library_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final User user;
@@ -27,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
       HomeContent(user: widget.user),
       MarketScreen(),
       ProfileScreen(user: widget.user),
-      ChatbotScreen(user: widget.user), // ChatbotScreen'i listeye ekleyin
+      ChatbotScreen(user: widget.user),
+      LibraryScreen(), // Kütüphane sekmesini ekleyin
     ]);
   }
 
@@ -44,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : Colors.lightGreen,
           shape: BoxShape.circle,
+          border: isSelected ? Border.all(color: Colors.lightGreen, width: 2) : null,
         ),
         child: Icon(
           icon,
@@ -61,13 +64,19 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          _buildBottomNavigationBarItem(Icons.home, 'Home', 0),
+          _buildBottomNavigationBarItem(Icons.home, 'Ana Sayfa', 0),
           _buildBottomNavigationBarItem(Icons.shopping_cart, 'Market', 1),
-          _buildBottomNavigationBarItem(Icons.person, 'Profile', 2),
-          _buildBottomNavigationBarItem(Icons.smart_toy, 'AI', 3),
+          _buildBottomNavigationBarItem(Icons.person, 'Profil', 2),
+          _buildBottomNavigationBarItem(Icons.smart_toy, 'Organix', 3),
+          _buildBottomNavigationBarItem(Icons.library_books, 'Kütüphane', 4),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        selectedLabelStyle: TextStyle(color: Colors.lightGreen),
+        unselectedLabelStyle: TextStyle(color: Colors.lightGreen),
+        selectedItemColor: Colors.lightGreen,
+        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.lightGreen,
       ),
     );
   }
@@ -161,35 +170,36 @@ class HomeContent extends StatelessWidget {
                                                   height: 50,
                                                 ),
                                                 SizedBox(width: 10),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      field['name'],
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.bold,
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        field['name'],
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      'Sıcaklık: ${weather['temp']}°C',
-                                                      style: TextStyle(fontSize: 16),
-                                                    ),
-                                                    Text(
-                                                      'Hava: ${weather['weather']['description']}',
-                                                      style: TextStyle(fontSize: 16),
-                                                    ),
-                                                    Text(
-                                                      'Nem: ${weather['rh']}%',
-                                                      style: TextStyle(fontSize: 16),
-                                                    ),
-                                                  ],
+                                                      Text(
+                                                        'Sıcaklık: ${weather['temp']}°C',
+                                                        style: TextStyle(fontSize: 16),
+                                                      ),
+                                                      Text(
+                                                        'Hava: ${weather['weather']['description']}',
+                                                        style: TextStyle(fontSize: 16),
+                                                      ),
+                                                      Text(
+                                                        'Nem: ${weather['rh']}%',
+                                                        style: TextStyle(fontSize: 16),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             SizedBox(height: 10),
                                             Text('Boyut: ${field['size']} hektar', style: TextStyle(fontSize: 16)),
-                                            // Daha fazla veri gösterilebilir
                                           ],
                                         ),
                                       ),

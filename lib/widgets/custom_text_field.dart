@@ -6,6 +6,9 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final Function(String?) onSaved;
   final String? Function(String?) validator;
+  final TextEditingController? controller;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   const CustomTextField({
     required this.label,
@@ -13,6 +16,9 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     required this.onSaved,
     required this.validator,
+    this.controller,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -42,6 +48,9 @@ class CustomTextField extends StatelessWidget {
         keyboardType: keyboardType,
         onSaved: onSaved,
         validator: validator,
+        controller: controller,
+        readOnly: readOnly,
+        onTap: onTap,
       ),
     );
   }

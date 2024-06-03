@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: ${e.toString()}'),
+          content: Text('Hata: ${e.toString()}'),
         ));
       }
     }
@@ -70,34 +70,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 300,
                 ),
                 CustomTextField(
-                  label: 'Email',
+                  label: 'E-posta',
                   keyboardType: TextInputType.emailAddress,
                   onSaved: (value) => _email = value,
                   validator: (value) => value!.isEmpty || !value.contains('@')
-                      ? 'Please enter a valid email address'
+                      ? 'Lütfen geçerli bir e-posta adresi girin'
                       : null,
                 ),
                 CustomTextField(
-                  label: 'Password',
+                  label: 'Şifre',
                   obscureText: true,
                   onSaved: (value) => _password = value,
                   validator: (value) => value!.isEmpty
-                      ? 'Please enter your password'
+                      ? 'Lütfen şifrenizi girin'
                       : null,
                 ),
                 SizedBox(height: 20),
                 PrimaryButton(
-                  text: 'Login',
+                  text: 'Giriş Yap',
                   onPressed: _login,
                   backgroundColor: Colors.lightGreen,
                 ),
                 TextButton(
                   onPressed: _navigateToForgotPassword,
-                  child: Text('Forgot Password?'),
+                  child: Text('Şifrenizi mi unuttunuz?'),
                 ),
                 TextButton(
                   onPressed: _navigateToRegister,
-                  child: Text('Don\'t have an account? Register'),
+                  child: Text('Hesabınız yok mu? Kayıt Olun'),
                 ),
               ],
             ),

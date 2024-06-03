@@ -27,7 +27,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     if (statuses[Permission.storage] != PermissionStatus.granted || statuses[Permission.camera] != PermissionStatus.granted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Storage and Camera permissions are required to pick an image. Please grant the permissions in settings.'),
+        content: Text('Resim seçmek için Depolama ve Kamera izinleri gereklidir. Lütfen ayarlardan izin verin.'),
       ));
     }
   }
@@ -66,12 +66,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
         Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: ${e.toString()}'),
+          content: Text('Hata: ${e.toString()}'),
         ));
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please fill in all fields and select an image'),
+        content: Text('Lütfen tüm alanları doldurun ve bir resim seçin'),
       ));
     }
   }
@@ -88,8 +88,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Product'),
-        backgroundColor: Colors.green,
+        title: Text('Ürün Ekle'),
+        backgroundColor: Colors.lightGreen,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -99,42 +99,42 @@ class _AddProductScreenState extends State<AddProductScreen> {
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Product Name'),
+                decoration: InputDecoration(labelText: 'Ürün Adı'),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter the product name';
+                    return 'Lütfen ürün adını girin';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Product Description'),
+                decoration: InputDecoration(labelText: 'Ürün Açıklaması'),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter the product description';
+                    return 'Lütfen ürün açıklamasını girin';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _priceController,
-                decoration: InputDecoration(labelText: 'Product Price'),
+                decoration: InputDecoration(labelText: 'Ürün Fiyatı'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter the product price';
+                    return 'Lütfen ürün fiyatını girin';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _quantityController,
-                decoration: InputDecoration(labelText: 'Product Quantity'),
+                decoration: InputDecoration(labelText: 'Ürün Miktarı'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter the product quantity';
+                    return 'Lütfen ürün miktarını girin';
                   }
                   return null;
                 },
@@ -143,15 +143,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
               _image == null
                   ? ElevatedButton(
                 onPressed: _pickImage,
-                child: Text('Pick Image'),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                child: Text('Resim Seç'),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.lightGreen),
               )
                   : Image.file(_image!),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _addProduct,
-                child: Text('Add Product'),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                child: Text('Ürün Ekle'),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.lightGreen),
               ),
             ],
           ),

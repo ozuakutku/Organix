@@ -60,7 +60,7 @@ class _PrimaryButtonState extends State<PrimaryButton> with SingleTickerProvider
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
-            textStyle: TextStyle(fontSize: 18),
+            textStyle: TextStyle(fontSize: 18,color: Colors.white),
           ),
           onPressed: widget.onPressed,
           child: Text(widget.text),

@@ -66,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
+          SnackBar(content: Text('Hata: ${e.toString()}')),
         );
       }
     }
@@ -92,27 +92,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: ListView(
               shrinkWrap: true,
               children: <Widget>[
-                SizedBox(height: 50),
                 CustomTextField(
-                  label: 'First Name',
+                  label: 'Ad',
                   onSaved: (value) => _firstName = value,
-                  validator: (value) => value!.isEmpty ? 'Please enter your first name' : null,
+                  validator: (value) => value!.isEmpty ? 'Lütfen adınızı girin' : null,
                 ),
                 CustomTextField(
-                  label: 'Last Name',
+                  label: 'Soyad',
                   onSaved: (value) => _lastName = value,
-                  validator: (value) => value!.isEmpty ? 'Please enter your last name' : null,
+                  validator: (value) => value!.isEmpty ? 'Lütfen soyadınızı girin' : null,
                 ),
                 CustomTextField(
-                  label: 'Email',
+                  label: 'E-posta',
                   keyboardType: TextInputType.emailAddress,
                   onSaved: (value) => _email = value,
-                  validator: (value) => value!.isEmpty || !value.contains('@') ? 'Please enter a valid email address' : null,
+                  validator: (value) => value!.isEmpty || !value.contains('@') ? 'Lütfen geçerli bir e-posta adresi girin' : null,
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Birth Date (YYYY-MM-DD)'),
-                  readOnly: true,
+                CustomTextField(
+                  label: 'Doğum Tarihi (YYYY-AA-GG)',
                   controller: _dateController,
+                  readOnly: true,
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -130,43 +129,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                   validator: (value) {
                     if (_birthDate == null) {
-                      return 'Please enter your birth date';
+                      return 'Lütfen doğum tarihinizi girin';
                     }
                     return null;
                   },
+                  onSaved: (value) {},
                 ),
                 CustomTextField(
-                  label: 'Occupation',
+                  label: 'Meslek',
                   onSaved: (value) => _occupation = value,
-                  validator: (value) => value!.isEmpty ? 'Please enter your occupation' : null,
+                  validator: (value) => value!.isEmpty ? 'Lütfen mesleğinizi girin' : null,
                 ),
                 CustomTextField(
-                  label: 'Phone Number',
+                  label: 'Telefon Numarası',
                   keyboardType: TextInputType.phone,
                   onSaved: (value) => _phoneNumber = value,
-                  validator: (value) => value!.isEmpty ? 'Please enter your phone number' : null,
+                  validator: (value) => value!.isEmpty ? 'Lütfen telefon numaranızı girin' : null,
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Password'),
+                CustomTextField(
+                  label: 'Şifre',
                   obscureText: true,
                   controller: _passwordController,
                   onSaved: (value) => _password = value,
-                  validator: (value) => value!.isEmpty ? 'Please enter your password' : null,
+                  validator: (value) => value!.isEmpty ? 'Lütfen şifrenizi girin' : null,
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Confirm Password'),
+                CustomTextField(
+                  label: 'Şifreyi Onayla',
                   obscureText: true,
                   controller: _confirmPasswordController,
                   validator: (value) {
                     if (value != _passwordController.text) {
-                      return 'Passwords do not match';
+                      return 'Şifreler eşleşmiyor';
                     }
                     return null;
                   },
+                  onSaved: (value) {},
                 ),
                 const SizedBox(height: 20),
                 PrimaryButton(
-                  text: 'Register',
+                  text: 'Kayıt Ol',
                   onPressed: _register,
                   backgroundColor: Colors.lightGreen,
                 ),

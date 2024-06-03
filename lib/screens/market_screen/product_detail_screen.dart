@@ -12,12 +12,12 @@ class ProductDetailScreen extends StatelessWidget {
     try {
       await FirebaseFirestore.instance.collection('products').doc(product.id).delete();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Product removed successfully')),
+        SnackBar(content: Text('Ürün başarıyla kaldırıldı')),
       );
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
+        SnackBar(content: Text('Hata: ${e.toString()}')),
       );
     }
   }
@@ -26,14 +26,19 @@ class ProductDetailScreen extends StatelessWidget {
     DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(ownerId).get();
     String phoneNumber = userDoc['phone'];
 
-    String message = 'I am interested in your product: ${product['name']}';
+    // Telefon numarasının başında "+" işareti olduğundan emin olun
+    if (!phoneNumber.startsWith('+')) {
+      phoneNumber = '+$phoneNumber';
+    }
 
-    String url = 'sms:$phoneNumber?body=$message';
-    if (await canLaunch(url)) {
-      await launch(url);
+    String message = 'Ürününüzle ilgileniyorum: ${product['name']}';
+    Uri url = Uri.parse('https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Could not launch SMS'),
+        content: Text('WhatsApp açılamadı'),
       ));
     }
   }
@@ -45,7 +50,7 @@ class ProductDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(product['name']),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.lightGreen,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -60,17 +65,17 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Price: ${product['price']} USD',
+              'Fiyat: ${product['price']} USD',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 10),
             Text(
-              'Quantity: ${product['quantity']}',
+              'Miktar: ${product['quantity']}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 20),
             Text(
-              'Description:',
+              'Açıklama:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
@@ -84,7 +89,7 @@ class ProductDetailScreen extends StatelessWidget {
                 onPressed: () {
                   _removeProduct(context);
                 },
-                child: Text('Remove Product'),
+                child: Text('Ürünü Kaldır'),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               ),
             ],
@@ -92,8 +97,8 @@ class ProductDetailScreen extends StatelessWidget {
               onPressed: () {
                 _sendMessage(context, product['ownerId']);
               },
-              child: Text('Message Seller'),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              child: Text('Satıcıya WhatsApp Mesajı Gönder'),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.lightGreen),
             ),
           ],
         ),

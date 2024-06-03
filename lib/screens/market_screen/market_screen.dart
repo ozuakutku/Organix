@@ -29,6 +29,8 @@ class MarketScreen extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
           var products = snapshot.data!.docs;
+          // Filter out products with price 0
+          var filteredProducts = products.where((product) => product['price'] > 0).toList();
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -36,9 +38,9 @@ class MarketScreen extends StatelessWidget {
               mainAxisSpacing: 10.0,
               childAspectRatio: 0.75,
             ),
-            itemCount: products.length,
+            itemCount: filteredProducts.length,
             itemBuilder: (context, index) {
-              var product = products[index];
+              var product = filteredProducts[index];
               return ProductCard(product: product);
             },
           );
@@ -96,7 +98,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    '\$${product['price']}',
+                    '${product['price']} TL',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.green,
